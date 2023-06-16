@@ -12,38 +12,18 @@
     <body>
         <div id="app">
             <div class="container">
-                <!-- 左側表示の吹き出し -->
-                <div class="left-side">
-                    <div class="left-side-icon"></div>
-                    <div class="bubble">２つの方法で相場を計算することができます。</div>
-                </div>
-                <div class="left-side">
-                    <div class="bubble">どちらがご希望に近いですか？</div>
-                </div>
-                <!-- 右側表示の吹き出し -->
-                <div class="right-side">
-                    <div class="kidoku">既読</div>
-                    <div class="bubble">テスト文章</div>
-                </div>
+                <talk-adviser v-bind:first="true" v-if="count >= 1" v-on:countup="countUp">２つの方法で相場を計算することができます。</talk-adviser>
+                <talk-adviser v-if="count >= 2" v-on:countup="countUp">どちらがご希望に近いですか？</talk-adviser>
 
-                <div class="select-calc">
-                    <div class="select-calc-content">
-                        <div class="select-calc-message">
-                            <p>ざっくり計算</p>
-                            <p>広さや形状から<br>おおまかに</p>
-                        </div>
-                    </div>
-                    <div class="select-calc-content">
-                        <div class="select-calc-message">
-                            <p>しっかり計算</p>
-                            <p>欲しい機能や<br>設備も入れて</p>
-                        </div>
-                    </div>
-                </div>
+                <select-calc v-bind:class="{hide: isHide}" v-if="count >= 3" v-on:hoge="selectedBtn"></select-calc>
 
+                <talk-me v-if="count >= 4" v-on:alreadyRead="countUp">{{ selected }}です。</talk-me>
+
+                <talk-adviser v-bind:first="true" v-if="count >= 5" v-on:countup="countUp">かしこまりました。</talk-adviser>
+                <talk-adviser v-if="count >= 6" v-on:countup="countUp">あなたの費用を、データをもとに{{ selected }}します。</talk-adviser>
             </div>
         </div>
         <script src="https://unpkg.com/vue@next"></script>
-        <script src="js/main.js"></script>
+        <script type="module" src="js/main.js"></script>
     </body>
 </html>

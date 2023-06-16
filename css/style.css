@@ -138,8 +138,8 @@ td {
   transform: rotate(148deg);
 }
 
-.kidoku {
-  visibility: hidden;
+.alreadyRead {
+  /* visibility: hidden; */
   height: 30px;
   font-size: 1.4rem;
   margin-right: 10px;
@@ -174,4 +174,46 @@ td {
 .select-calc-message p:first-of-type {
   font-size: 26px;
   font-weight: bold;
+}
+
+
+/* 文字読み込み時のボール */
+.ball-container {
+  display: flex;
+  text-align: center;
+}
+
+.ball {
+  width: 10px;
+  height: 10px;
+  margin: 5px;
+  border-radius: 50px;
+}
+
+.ball:nth-child(1) {
+  background: #555;
+  animation: up 1s infinite ease-in-out;
+}
+.ball:nth-child(2) {
+  background: #555;
+  animation: down 1.1s infinite ease-in-out;
+}
+.ball:nth-child(3) {
+  background: #555;
+  animation: up 1.05s infinite ease-in-out;
+}
+
+@keyframes up {
+  0% {transform: translateY(-8px);}
+  50% {transform: translateY(8px);}
+  100% {transform: translateY(-8px);}
+}
+@keyframes down {
+  0% {transform: translateY(-8px);}
+  50% {transform: translateY(8px);}
+  100% {transform: translateY(-8px);}
+}
+
+.hide {
+  display: none
 }
