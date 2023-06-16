@@ -1,0 +1,49 @@
+<!DOCTYPE html>
+<html lang="ja">
+    <head>
+        <meta charset="UTF-8">
+        <meta http-equiv="X-UA-Compatible" content="IE=edge">
+        <meta name="viewport" content="width=device-width, initial-scale=1.0">
+        <title>チャットボット質問ツール</title>
+        <meta name="description" content="チャットボット質問ツール">
+        <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/4.4.0/css/bootstrap-reboot.min.css">
+        <link rel="stylesheet" href="css/style.css">
+    </head>
+    <body>
+        <div id="app">
+            <div class="container">
+                <!-- 左側表示の吹き出し -->
+                <div class="left-side">
+                    <div class="left-side-icon"></div>
+                    <div class="bubble">２つの方法で相場を計算することができます。</div>
+                </div>
+                <div class="left-side">
+                    <div class="bubble">どちらがご希望に近いですか？</div>
+                </div>
+                <!-- 右側表示の吹き出し -->
+                <div class="right-side">
+                    <div class="kidoku">既読</div>
+                    <div class="bubble">テスト文章</div>
+                </div>
+
+                <div class="select-calc">
+                    <div class="select-calc-content">
+                        <div class="select-calc-message">
+                            <p>ざっくり計算</p>
+                            <p>広さや形状から<br>おおまかに</p>
+                        </div>
+                    </div>
+                    <div class="select-calc-content">
+                        <div class="select-calc-message">
+                            <p>しっかり計算</p>
+                            <p>欲しい機能や<br>設備も入れて</p>
+                        </div>
+                    </div>
+                </div>
+
+            </div>
+        </div>
+        <script src="https://unpkg.com/vue@next"></script>
+        <script src="js/main.js"></script>
+    </body>
+</html>

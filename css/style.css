@@ -1,0 +1,177 @@
+@charset "UTF-8";
+/*-------------------------
+  初期値
+-------------------------*/
+html {
+  font-size: 62.5%;
+  scroll-behavior: smooth;
+}
+body {
+  font-family: "Helvetica Neue", Arial, "Hiragino Kaku Gothic ProN",
+    "Hiragino Sans", Meiryo, sans-serif;
+  color: #333;
+  font-size: 1.6rem;
+  text-size-adjust: 100%;
+  line-height: 2;
+  font-feature-settings: "palt";
+  background-size: auto auto;
+  background-color: rgba(255, 255, 255, 1);
+  background-image: repeating-linear-gradient(
+      53deg,
+      transparent,
+      transparent 8px,
+      rgba(45, 45, 45, 0.05) 8px,
+      rgba(45, 45, 45, 0.05) 9px
+    ),
+    repeating-linear-gradient(
+      127deg,
+      transparent,
+      transparent 8px,
+      rgba(45, 45, 45, 0.05) 8px,
+      rgba(45, 45, 45, 0.05) 9px
+    );
+}
+ol,
+ul {
+  list-style-type: none;
+  padding-left: 0;
+}
+table {
+  border-collapse: collapse;
+  width: 100%;
+}
+tr:nth-of-type(odd) {
+  background-color: #fbfbfb;
+}
+th,
+td {
+  border: 1px solid #ccc;
+  padding: 20px;
+}
+
+.container {
+  position: relative;
+  width: 900px;
+  margin: 20px auto;
+}
+
+/* 左右共通のスタイリング */
+.left-side,
+.right-side {
+  width: 100%;
+  display: flex;
+  position: relative;
+}
+.right-side {
+  justify-content: flex-end;
+  align-items: flex-end;
+}
+
+.left-side-icon {
+  position: absolute;
+  width: 100px;
+  height: 100px;
+  background: url("https://placekitten.com/400/400") 0 0 / 100px 100px no-repeat;
+  border-radius: 50px;
+}
+.left-side-icon::after {
+  content: "大竹";
+  position: absolute;
+  bottom: -30px;
+  left: 50%;
+  transform: translate(-50%);
+}
+
+/* 吹き出しのスタイリング */
+.bubble {
+  padding: 10px;
+  border-radius: 20px;
+  display: inline-block;
+  background: #fff;
+  position: relative;
+  border: 3px solid #98d9f9;
+}
+
+.bubble::before {
+  position: absolute;
+  content: "";
+  border: 11px solid transparent;
+  margin-top: -15px;
+  top: 12px;
+  z-index: -1;
+}
+.bubble::after {
+  position: absolute;
+  content: "";
+  border: 11px solid transparent;
+  margin-top: -15px;
+  top: 15px;
+  z-index: 1;
+}
+
+/* 左側表示の吹き出しのスタイリング */
+.left-side .bubble {
+  margin: 30px 0 0 120px;
+}
+
+.left-side .bubble::before {
+  border-right: 19px solid #98d9f9;
+  left: -24px;
+  transform: rotate(32deg);
+}
+.left-side .bubble::after {
+  border-right: 19px solid #fff;
+  left: -19px;
+  transform: rotate(32deg);
+}
+
+/* 右側表示の吹き出しのスタイリング */
+.right-side .bubble {
+  color: #fff;
+  border: 3px solid #26a7a7;
+  background-color: #26a7a7;
+  position: relative;
+}
+.right-side .bubble::before {
+  border-right: 19px solid #26a7a7;
+  right: -24px;
+  transform: rotate(148deg);
+}
+
+.kidoku {
+  visibility: hidden;
+  height: 30px;
+  font-size: 1.4rem;
+  margin-right: 10px;
+}
+
+
+/* 計算選択肢 */
+.select-calc {
+  width: 80%;
+  height: 250px;
+  margin: 30px auto;
+  display: flex;
+  justify-content: space-around;
+  background-color: rgba(40, 160, 255, 0.3);
+}
+.select-calc-content {
+  width: 45%;
+  margin: 20px 0;
+  border-radius: 10px;
+  background-color: #fff;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  text-align: center;
+  border: 1px solid #0f3b3b;
+  box-shadow: 0 3px 3px #26a7a7;
+}
+.select-calc-content:hover {
+  color: #fff;
+  background-color: #26a7a7;
+}
+.select-calc-message p:first-of-type {
+  font-size: 26px;
+  font-weight: bold;
+}
