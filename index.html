@@ -4,46 +4,38 @@
         <meta charset="UTF-8">
         <meta http-equiv="X-UA-Compatible" content="IE=edge">
         <meta name="viewport" content="width=device-width, initial-scale=1.0">
-        <title>チャットボット質問ツール</title>
-        <meta name="description" content="チャットボット質問ツール">
+        <title>チャット形式質問ツール</title>
+        <meta name="description" content="チャット形式質問ツール">
         <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/4.4.0/css/bootstrap-reboot.min.css">
         <link rel="stylesheet" href="css/style.css">
     </head>
     <body>
         <div id="app">
+            <!-- ロード画面 -->
+            <Loading v-on:countup="countUp"></Loading>
             <div class="container">
-                <!-- 左側表示の吹き出し -->
-                <div class="left-side">
-                    <div class="left-side-icon"></div>
-                    <div class="bubble">２つの方法で相場を計算することができます。</div>
-                </div>
-                <div class="left-side">
-                    <div class="bubble">どちらがご希望に近いですか？</div>
-                </div>
-                <!-- 右側表示の吹き出し -->
-                <div class="right-side">
-                    <div class="kidoku">既読</div>
-                    <div class="bubble">テスト文章</div>
-                </div>
-
-                <div class="select-calc">
-                    <div class="select-calc-content">
-                        <div class="select-calc-message">
-                            <p>ざっくり計算</p>
-                            <p>広さや形状から<br>おおまかに</p>
-                        </div>
-                    </div>
-                    <div class="select-calc-content">
-                        <div class="select-calc-message">
-                            <p>しっかり計算</p>
-                            <p>欲しい機能や<br>設備も入れて</p>
-                        </div>
-                    </div>
-                </div>
-
+                <!-- アドバイザー -->
+                <talk-adviser v-if="count >= 1" @countup="countUp" :icon="true"> ２つの方法で相場を計算することができます。 </talk-adviser>
+                <talk-adviser v-if="count >= 2" @countup="countUp"> どちらがご希望に近いですか？ </talk-adviser>
+                <!-- 選択肢 -->
+                <select-calc v-if="count >= 3" @selected-word="selectedBtn" :class="{hide: isHide}"></select-calc>
+                <!-- ユーザー -->
+                <talk-me v-if="count >= 4" @countup="countUp">{{ selected }}です。</talk-me>
+                <!-- アドバイザー -->
+                <talk-adviser v-if="count >= 5" @countup="countUp" :icon="true"> かしこまりました。 </talk-adviser>
+                <!-- ざっくり計算を選択した場合の処理 -->
+                <template v-if="selected === 'ざっくり計算'">
+                    <talk-adviser v-if="count >= 6" @countup="countUp"> データをもとに、あなたの費用を{{ selected }}します。 </talk-adviser>
+                </template>
+                <!-- しっかり計算を選択した場合の処理 -->
+                <template v-if="selected === 'しっかり計算'">
+                    <talk-adviser v-if="count >= 6" @countup="countUp">一戸建てのお風呂リフォーム相場は</talk-adviser>
+                    <talk-adviser-img v-if="count >= 7" class-name="graph" src-path="./images/graph.png" alt-str="グラフ" @countup="countUp"></talk-adviser-img>
+                    <talk-adviser v-if="count >= 8" v-on:countup="countUp" :icon="true">あなたの費用を、データをもとに{{ selected }}します。</talk-adviser>
+                </template>
             </div>
         </div>
         <script src="https://unpkg.com/vue@next"></script>
-        <script src="js/main.js"></script>
+        <script type="module" src="js/main.js"></script>
     </body>
 </html>
