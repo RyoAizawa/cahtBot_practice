@@ -46,7 +46,8 @@ body {
   max-width: 800px;
   padding: 20px;
   padding-top: 50px;
-  margin: 0 auto;
+  margin: auto;
+  margin-bottom: 2000px;
 }
 
 /* 左右共通のスタイリング */

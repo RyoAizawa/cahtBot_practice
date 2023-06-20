@@ -2,7 +2,7 @@
 export default {
   emits: ["selectedWord"],
   template:
-  `<div id="target" class="select-calc">
+  `<div class="select-calc scrollTarget">
     <div class="select-calc-content" v-on:click="getSelect('about')">
       <div class="select-calc-message">
         <p>ざっくり計算</p>
@@ -18,11 +18,11 @@ export default {
   </div>`,
   mounted() {
     // 指定位置に0.3秒後にスクロールする（createdだと動作しないためmountedで使用）
-    let element = document.getElementById("target"); // 移動させたい位置の要素を取得
-    let rect = element.getBoundingClientRect();
-    let position = rect.top;    // 要素の頂点の高さを設定
+    let lastDiv = document.querySelector(".scrollTarget:nth-last-child(1)"); // 移動させたい位置の要素を取得
+    let rect = lastDiv.getBoundingClientRect();
+    let position = rect.top + scrollY; // 要素の頂点の高さを設定
     setTimeout(function () {
-      scrollTo(0, position);
+      scroll(0, position);
     }, 300);
   },
   methods: {
