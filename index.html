@@ -12,12 +12,13 @@
     <body>
         <div id="app">
             <!-- ロード画面 -->
-            <!-- <Loading v-on:countup="countUp"></Loading> -->
+            <Loading v-if="isLoaded === false"></Loading>
             <div class="container">
-                <Chat-master></Chat-master>
+                <!-- チャット出力領域 -->
+                <div id="chat"></div>
             </div>
         </div>
         <script src="https://unpkg.com/vue@next"></script>
-        <script type="module" src="js/main.js"></script>
+        <script src="js/main.js"></script>
     </body>
 </html>
