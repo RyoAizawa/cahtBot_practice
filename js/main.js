@@ -4,8 +4,21 @@ Vue.createApp({
       adviserMsg: "",
       myMsg: "",
       isLoaded: false,
-      selected: "", // 選択した計算方式
       isHide: false, // 要素を隠す
+      // 各質問項目回答データ
+      selectObj: [
+        { "calcSelected": "" },// 選択した計算方式
+        { "bathType": "" },
+        { "bathSize": "" },
+        { "bathShape": "" },
+        { "keepWarm": "" },
+        { "bubbleBath": "" },
+        { "audio": "" },
+        { "television": "" },
+        { "light": "" },
+        { "reheating": "" },
+        { "interphone": "" },
+      ]
     };
   },
   created() {
@@ -23,47 +36,182 @@ Vue.createApp({
       // ロード画面の出力
       await this.loaded();
 
+      // 選択肢用配列
+      let msgArray = [];
+      let subMsgArray = [];
+      let imgArray = [];
+
       // アドバイザー
-      let msg = "２つの方法で相場を計算することができます。";
-      this.adviserTalk(msg, true);
+      this.adviserTalk("２つの方法で相場を計算することができます。", true);
       await this.wait(2);
 
       // アドバイザー
-      msg = "どちらがご希望に近いですか？";
-      this.adviserTalk(msg);
+      this.adviserTalk("どちらがご希望に近いですか？");
       await this.wait(2);
-
-      // 計算方式の選択待ち
-      await this.calcSelect();
-
+      // 選択肢
+      msgArray = ["ざっくり計算", "しっかり計算"];
+      subMsgArray = ["広さや形状から<br>おおまかに", "広さや形状から<br>おおまかに"];
+      imgArray = null;
+      await this.select("calcSelected", msgArray, imgArray, subMsgArray, true);
       // ユーザー
-      msg = this.selected;
-      this.myTalk(msg);
+      this.myTalk(this.selectObj["calcSelected"]);
       await this.wait(3);
 
+      // this.questionBlock("どちらがご希望に近いですか？", "calcSelected", msgArray, imgArray, subMsgArray, false, true)
+
       // アドバイザー
-      msg = "かしこまりました。";
-      this.adviserTalk(msg, true);
+      this.adviserTalk("かしこまりました。", true);
       await this.wait(2);
 
       // ざっくり計算を選択した場合
-      if (this.selected === "ざっくり計算") {
-        msg = `データをもとに、あなたの費用を${this.selected}します。`;
-        this.adviserTalk(msg);
+      if (this.selectObj["calcSelected"] === "ざっくり計算") {
+        this.adviserTalk(`データをもとに、あなたの費用を${this.selectObj["calcSelected"]}します。`);
+        await this.wait(2);
+
       } else {
         // しっかり計算を選択した場合
-        msg = "一戸建てのお風呂リフォーム相場は";
-        this.adviserTalk(msg);
+        this.adviserTalk("一戸建てのお風呂リフォーム相場は");
         await this.wait(2);
 
         // アドバイザーが画像を出力
         this.adviserTalkImg("graph", "./images/graph.png", "グラフ");
         await this.wait(2);
 
-        msg = `あなたの費用を、データをもとに${this.selected}します。`;
-        this.adviserTalk(msg, true);
+        this.adviserTalk(`あなたの費用を、データをもとに${this.selectObj["calcSelected"]}します。`, true);
+        await this.wait(2);
       }
+
+      // アドバイザー
+      this.adviserTalk("希望されるお風呂は、どのような形式ですか？", true);
+      await this.wait(2);
+      // 選択肢
+      msgArray = ["ユニットバス", "タイル貼り", "わからない"];
+      imgArray = ["./images/bath.png", "./images/tile.png", "./images/idontknow.png"];
+      await this.select("bathType", msgArray, imgArray);
+      // ユーザー
+      this.myTalk(this.selectObj["bathType"]);
+      await this.wait(3);
+
+      // アドバイザー
+      this.adviserTalk("希望されるお風呂の大きさは、どのくらいですか？", true);
+      await this.wait(2);
+      // 選択肢
+      msgArray = ["2畳未満", "2畳以上", "わからない"];
+      imgArray = ["./images/less2.png", "./images/over2.png", "./images/idontknow.png"];
+      await this.select("bathSize", msgArray, imgArray);
+      // ユーザー
+      this.myTalk(this.selectObj["bathType"]);
+      await this.wait(3);
+
+
+      this.adviserTalk("浴槽まわりの希望をお伺いします。", true);
+      await this.wait(2);
+
+      // アドバイザー
+      this.adviserTalk("湯船につかる頻度が多い場合は、浴槽の形が重要です。", true);
+      await this.wait(2);
+      this.adviserTalk("浴槽の形にこだわりはありますか？");
+      await this.wait(2);
+      // 選択肢
+      msgArray = ["広さ重視", "節水重視", "特になし"];
+      await this.select("bathShape", msgArray);
+      // ユーザー
+      this.myTalk(this.selectObj["bathShape"]);
+      await this.wait(3);
+
+      // アドバイザー
+      this.adviserTalk("お湯の冷めにくい、保温効果のある浴槽をご希望されますか？", true);
+      await this.wait(2);
+      // 選択肢
+      msgArray = ["はい", "興味がある", "いいえ"];
+      await this.select("keepWarm", msgArray);
+      // ユーザー
+      this.myTalk(this.selectObj["keepWarm"]);
+      await this.wait(3);
+
+      // アドバイザー
+      this.adviserTalk("リラックス・マッサージ効果のある、バブルバス・ジェットバスをご希望されますか？", true);
+      await this.wait(2);
+      // 選択肢
+      msgArray = ["はい", "興味がある", "いいえ"];
+      await this.select("bubbleBath", msgArray);
+      // ユーザー
+      this.myTalk(this.selectObj["bubbleBath"]);
+      await this.wait(3);
+
+      // アドバイザー
+      this.adviserTalk("お風呂に埋込み型のオーディオを設置すると、音の広がりがよく、また見た目もスッキリします。", true);
+      await this.wait(2);
+      this.adviserTalk("お風呂にオーディオの設置を希望されますか？");
+      await this.wait(2);
+      // 選択肢
+      msgArray = ["はい", "興味がある", "いいえ"];
+      await this.select("audio", msgArray);
+      // ユーザー
+      this.myTalk(this.selectObj["audio"]);
+      await this.wait(3);
+
+      // アドバイザー
+      this.adviserTalk("ゆったりお湯に浸かりながら、最大24インチの大迫力の画面でテレビを楽しむこともできます。", true);
+      await this.wait(2);
+      this.adviserTalk("お風呂にテレビの設置を希望されますか？");
+      await this.wait(2);
+      // 選択肢
+      msgArray = ["はい", "興味がある", "いいえ"];
+      await this.select("television", msgArray);
+      // ユーザー
+      this.myTalk(this.selectObj["television"]);
+      await this.wait(3);
+
+      // アドバイザー
+      this.adviserTalk("設置する照明にこだわると、利用シーンに合わせて浴室の雰囲気を手軽に変えることができます。", true);
+      await this.wait(2);
+      this.adviserTalk("機能的な照明をご希望されますか？");
+      await this.wait(2);
+      // 選択肢
+      msgArray = ["はい", "興味がある", "いいえ"];
+      await this.select("light", msgArray);
+      // ユーザー
+      this.myTalk(this.selectObj["light"]);
+      await this.wait(3);
+
+      // アドバイザー
+      this.adviserTalk("湯船に浸かる人が複数いたり、利用時間がバラバラな場合は、追い焚き機能が便利です。", true);
+      await this.wait(2);
+      this.adviserTalk("追い焚き機能をご希望されますか？");
+      await this.wait(2);
+      // 選択肢
+      msgArray = ["はい", "興味がある", "いいえ"];
+      await this.select("reheating", msgArray);
+      // ユーザー
+      this.myTalk(this.selectObj["reheating"]);
+      await this.wait(3);
+
+      // アドバイザー
+      this.adviserTalk("リビングの家族を呼び出したり会話ができるインターフォンの設置を希望しますか？", true);
+      await this.wait(2);
+      // 選択肢
+      msgArray = ["はい", "興味がある", "いいえ"];
+      await this.select("interphone", msgArray);
+      // ユーザー
+      this.myTalk(this.selectObj["interphone"]);
+      await this.wait(3);
     },
+
+    // // 質問、選択肢、回答までのまとめ
+    // async questionBlock(adviserMsg, key, msgArray, imgArray, subMsgArray, icon = true, calc = false) {
+    //   // アドバイザー
+    //   this.adviserTalk(adviserMsg, icon);
+    //   await this.wait(2);
+
+    //   // 選択肢
+    //   await this.select(key, msgArray, imgArray, subMsgArray, calc);
+    //   await this.wait(2);
+
+    //   // ユーザー
+    //   this.myTalk(this.selectObj[key]);
+    //   await this.wait(3);
+    // },
 
     // アドバイザーの会話を作成
     adviserTalk(adviserMsg, icon = false) {
@@ -99,7 +247,17 @@ Vue.createApp({
 
       messageDiv.classList.add("right-side");
       message.classList.add("bubble");
-      message.innerHTML = `${myMsg}です。`;
+
+      // 選択肢により一部出力文字を変換
+      console.log(myMsg)
+      if (myMsg === "しっかり計算" || myMsg === "ざっくり計算") {
+        outMsg = `${myMsg}です`;
+      } else if (myMsg === "興味がある") {
+        outMsg = "興味があります";
+      } else {
+        let outMsg = myMsg;
+      }
+      message.innerHTML = `${outMsg}`;
 
       messageDiv.appendChild(loadingBall);
       chat.appendChild(messageDiv);
@@ -138,55 +296,61 @@ Vue.createApp({
     },
 
     // 会話中に出てくる計算方式の選択肢を出力
-    async calcSelect() {
+    async select(key, msgArray, imgArray = null, subMsgArray = null, calc = false) {
       const chat = document.getElementById("chat");
       const selectDiv = document.createElement("div");
-      selectDiv.classList.add("select-calc", "scrollTarget");
+      selectDiv.classList.add("select-area", "scrollTarget");
 
-      const selectContentDivAbout = document.createElement("div");
-      const messageAbout = document.createElement("div");
-      const p = document.createElement("p");
-      const p2 = document.createElement("p");
-      selectContentDivAbout.classList.add("select-calc-content", "btn");
-      messageAbout.classList.add("select-calc-message");
+      if (calc) {
+        selectDiv.classList.add("calc");
+      }
 
-      p.innerHTML = "ざっくり計算";
-      p2.innerHTML = "広さや形状から<br>おおまかに";
-      messageAbout.appendChild(p);
-      messageAbout.appendChild(p2);
-      selectContentDivAbout.appendChild(messageAbout);
-      selectDiv.appendChild(selectContentDivAbout);
+      for (let i = 0; i < msgArray.length; i++) {
+        const selectContentDiv = document.createElement("div");
+        const message = document.createElement("div");
+        selectContentDiv.classList.add("select-content", "btn");
+        message.classList.add("select-message");
 
-      const selectContentDivTightly = document.createElement("div");
-      const messageTightly = document.createElement("div");
-      const p3 = document.createElement("p");
-      const p4 = document.createElement("p");
-      selectContentDivTightly.classList.add("select-calc-content", "btn");
-      messageTightly.classList.add("select-calc-message");
+        // 画像がある場合はimg要素を追加
+        if (imgArray) {
+          const img = document.createElement("img");
+          img.setAttribute("src", imgArray[i]);
+          message.appendChild(img);
+        }
 
-      p3.innerHTML = "しっかり計算";
-      p4.innerHTML = "欲しい機能や<br>設備も入れて";
-      messageTightly.appendChild(p3);
-      messageTightly.appendChild(p4);
-      selectContentDivTightly.appendChild(messageTightly);
-      selectDiv.appendChild(selectContentDivTightly);
+        // p要素を追加
+        const p = document.createElement("p");
+        p.innerHTML = msgArray[i];
+        message.appendChild(p);
+
+        // もうひと段落ある場合p要素を追加
+        if (subMsgArray) {
+          const p2 = document.createElement("p");
+          p2.innerHTML = subMsgArray[i];
+          message.appendChild(p2);
+        }
+        selectContentDiv.appendChild(message);
+        selectDiv.appendChild(selectContentDiv);
+      }
+      // 要素を追加
       chat.appendChild(selectDiv);
       this.autoScroll();
 
-      await this.btnClick();
+      await this.btnClick(key, msgArray);
       selectDiv.classList.add("hide");
     },
 
-    // 計算方式のボタンをクリック
-    btnClick() {
+    // 選択肢のボタンをクリック
+    btnClick(key, msgArray) {
       return new Promise((resolve) => {
         let btn = document.querySelectorAll(".btn");
-
-        btn[0].addEventListener("click", () => {this.selected = "ざっくり計算";});
-        btn[0].addEventListener("click", resolve);
-
-        btn[1].addEventListener("click", () => {this.selected = "しっかり計算";});
-        btn[1].addEventListener("click", resolve);
+        for (let i = 0; i < msgArray.length; i++) {
+          let btnIndex = btn.length - msgArray.length + i;
+          console.log(btn[btnIndex])
+          console.log(msgArray[i])
+          btn[btnIndex].addEventListener("click", () => {this.selectObj[key] = `${msgArray[i]}`;});
+          btn[btnIndex].addEventListener("click", resolve);
+        }
       });
     },
 

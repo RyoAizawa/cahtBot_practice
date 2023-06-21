@@ -47,7 +47,7 @@ body {
   padding: 20px;
   padding-top: 50px;
   margin: auto;
-  margin-bottom: 2000px;
+  /* margin-bottom: 2000px; */
 }
 
 /* 左右共通のスタイリング */
@@ -144,15 +144,19 @@ body {
 }
 
 /* 計算選択肢 */
-.select-calc {
-  width: 100%;
+.select-area {
+  width: 80%;
   height: 230px;
   margin: 30px auto;
   display: flex;
-  justify-content: space-around;
+  column-gap: 20px;
+  justify-content: center;
+}
+.calc {
+  width: 100%;
   background-color: var(--select-color-bg);
 }
-.select-calc-content {
+.select-content {
   width: 45%;
   margin: 20px 0;
   border-radius: 10px;
@@ -162,17 +166,21 @@ body {
   justify-content: center;
   text-align: center;
   border: 1px solid #0f3b3b;
-  box-shadow: 0 3px 3px var(--bubble-color-right);
+  box-shadow: 0 5px 5px var(--bubble-color-right);
   cursor: pointer;
 }
-.select-calc-content:hover {
+.select-content:hover {
   color: #fff;
   background-color: var(--bubble-color-right);
 }
-.select-calc-message p:first-of-type {
-  font-size: 2.6rem;
+.select-message p:first-of-type {
+  font-size: 2.4rem;
   font-weight: bold;
 }
+.select-content img {
+  padding: 20px;
+}
+
 
 /* 文字読み込み時のボール */
 .ball-container {
@@ -320,13 +328,13 @@ body {
   body {
     font-size: 1.6rem;
   }
-  .select-calc {
+  .select-area {
     width: 100%;
   }
-  .select-calc-message p:first-of-type {
+  .select-message p:first-of-type {
     font-size: 2.2rem;
   }
-  .select-calc-content:hover,
+  .select-content:hover,
   .right-side .bubble {
     color: #333;
   }
