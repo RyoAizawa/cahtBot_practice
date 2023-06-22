@@ -3,9 +3,9 @@
   CSS変数
 -------------------------*/
 :root {
-  --bubble-color-left: #98d9f9;
+  --bubble-color-left: #5abdef;
   --bubble-color-right: #26a7a7;
-  --select-color-bg: rgb(28 167 167 / 0.4);
+  --select-color-bg: rgb(90 189 239 / 0.5);
 }
 
 /*-------------------------
@@ -45,9 +45,8 @@ body {
   position: relative;
   max-width: 800px;
   padding: 20px;
-  padding-top: 50px;
   margin: auto;
-  /* margin-bottom: 2000px; */
+  margin-bottom: 500px;
 }
 
 /* 左右共通のスタイリング */
@@ -65,17 +64,22 @@ body {
 /* アドバイザーのアイコン出力 */
 .left-side-icon {
   position: absolute;
-  width: 100px;
-  height: 100px;
+  width: 90px;
+  height: 90px;
   background: url("https://placekitten.com/400/400") 0 0 / cover no-repeat;
   border-radius: 50px;
 }
 .left-side-icon::after {
   content: "大竹";
   position: absolute;
-  bottom: -30px;
+  font-size: 1.4rem;
+  bottom: -25px;
   left: 50%;
   transform: translate(-50%);
+}
+/* アイコン出力した場合上に余白を付けたい */
+.icon {
+  margin-top: 70px;
 }
 
 /* 吹き出しのスタイリング */
@@ -105,7 +109,7 @@ body {
 
 /* 左側表示の吹き出しのスタイリング */
 .left-side .bubble {
-  margin: 30px 0 0 120px;
+  margin: 20px 0 0 120px;
 }
 .left-side .bubble::before {
   border-right: 19px solid var(--bubble-color-left);
@@ -143,21 +147,17 @@ body {
   left: -50px;
 }
 
-/* 計算選択肢 */
+/* 選択肢 */
 .select-area {
   width: 80%;
-  height: 230px;
-  margin: 30px auto;
+  margin: 40px auto;
   display: flex;
   column-gap: 20px;
   justify-content: center;
 }
-.calc {
-  width: 100%;
-  background-color: var(--select-color-bg);
-}
 .select-content {
   width: 45%;
+  height: 200px;
   margin: 20px 0;
   border-radius: 10px;
   background-color: #fff;
@@ -169,18 +169,36 @@ body {
   box-shadow: 0 5px 5px var(--bubble-color-right);
   cursor: pointer;
 }
-.select-content:hover {
+.select-content:hover,
+.select-content:active {
   color: #fff;
   background-color: var(--bubble-color-right);
 }
 .select-message p:first-of-type {
-  font-size: 2.4rem;
+  font-size: 2.0rem;
   font-weight: bold;
 }
 .select-content img {
   padding: 20px;
 }
-
+/* 計算選択肢 */
+.calc {
+  width: 100%;
+  height: 250px;
+  background-color: var(--select-color-bg);
+}
+.calc p:first-of-type {
+  font-size: 2.4rem;
+  font-weight: bold;
+}
+/* 選択肢をクリックした後に、選択したものは塗りつぶし、それ以外は透過する */
+.btn.transparent {
+  opacity: 0.5;
+}
+.btn.select {
+  background-color: var(--bubble-color-right);
+  color: #fff;
+}
 
 /* 文字読み込み時のボール */
 .ball-container {
@@ -330,12 +348,24 @@ body {
   }
   .select-area {
     width: 100%;
+    column-gap: 0px;
+    flex-wrap: wrap;
+    justify-content: space-between;
   }
+
+
   .select-message p:first-of-type {
     font-size: 2.2rem;
   }
   .select-content:hover,
   .right-side .bubble {
     color: #333;
+  }
+  .btn.select {
+    color: #333;
+  }
+  .select-content {
+    width: 48%;
+    margin: 10px 0;
   }
 }
