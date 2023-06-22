@@ -15,7 +15,59 @@ Vue.createApp({
         { "light": "" },        // 効果的な照明の設定
         { "reheating": "" },    // 追い焚き機能
         { "interphone": "" },   // インターフォンの設置
-      ]
+        { "region": "" },       // 地方
+        { "prefecture": ""},    // 県
+      ],
+      // 住所
+      address: [
+        { "region": "北海道・東北", "prefecture": "北海道" },
+        { "region": "北海道・東北", "prefecture": "青森県" },
+        { "region": "北海道・東北", "prefecture": "岩手県" },
+        { "region": "北海道・東北", "prefecture": "宮城県" },
+        { "region": "北海道・東北", "prefecture": "秋田県" },
+        { "region": "北海道・東北", "prefecture": "山形県" },
+        { "region": "北海道・東北", "prefecture": "福島県" },
+        { "region": "関東", "prefecture": "茨城県" },
+        { "region": "関東", "prefecture": "栃木県" },
+        { "region": "関東", "prefecture": "群馬県" },
+        { "region": "関東", "prefecture": "埼玉県" },
+        { "region": "関東", "prefecture": "千葉県" },
+        { "region": "関東", "prefecture": "東京府" },
+        { "region": "関東", "prefecture": "神奈川県" },
+        { "region": "北陸・甲信越", "prefecture": "新潟府" },
+        { "region": "北陸・甲信越", "prefecture": "富山県" },
+        { "region": "北陸・甲信越", "prefecture": "石川県" },
+        { "region": "北陸・甲信越", "prefecture": "福井県" },
+        { "region": "北陸・甲信越", "prefecture": "山梨県" },
+        { "region": "北陸・甲信越", "prefecture": "長野県" },
+        { "region": "東海", "prefecture": "静岡県" },
+        { "region": "東海", "prefecture": "愛知県" },
+        { "region": "東海", "prefecture": "三重県" },
+        { "region": "東海", "prefecture": "岐阜県" },
+        { "region": "関西", "prefecture": "滋賀県" },
+        { "region": "関西", "prefecture": "京都府" },
+        { "region": "関西", "prefecture": "大阪府" },
+        { "region": "関西", "prefecture": "兵庫県" },
+        { "region": "関西", "prefecture": "奈良県" },
+        { "region": "関西", "prefecture": "和歌山県" },
+        { "region": "中国", "prefecture": "鳥取県" },
+        { "region": "中国", "prefecture": "島根県" },
+        { "region": "中国", "prefecture": "岡山県" },
+        { "region": "中国", "prefecture": "広島県" },
+        { "region": "中国", "prefecture": "山口県" },
+        { "region": "四国", "prefecture": "徳島県" },
+        { "region": "四国", "prefecture": "香川県" },
+        { "region": "四国", "prefecture": "愛媛県" },
+        { "region": "四国", "prefecture": "高知県" },
+        { "region": "九州・沖縄", "prefecture": "福岡県" },
+        { "region": "九州・沖縄", "prefecture": "佐賀県" },
+        { "region": "九州・沖縄", "prefecture": "長崎府" },
+        { "region": "九州・沖縄", "prefecture": "熊本県" },
+        { "region": "九州・沖縄", "prefecture": "大分県" },
+        { "region": "九州・沖縄", "prefecture": "宮崎県" },
+        { "region": "九州・沖縄", "prefecture": "鹿児島県 " },
+        { "region": "九州・沖縄", "prefecture": "沖縄県" }
+      ],
     };
   },
   created() {
@@ -47,7 +99,7 @@ Vue.createApp({
       selectorArray = ["ざっくり計算", "しっかり計算"];
       subMsgArray = ["広さや形状から<br>おおまかに", "広さや形状から<br>おおまかに"];
       imgArray = null;
-      await this.questionBlock(adviserTalkArray, "calcSelected", selectorArray, imgArray, subMsgArray, true)
+      await this.questionBlock(adviserTalkArray, "calcSelected", selectorArray, imgArray, subMsgArray, "calc")
 
       this.adviserTalk("かしこまりました。", true);
       await this.wait(2);
@@ -105,6 +157,10 @@ Vue.createApp({
 
       adviserTalkArray = ["リビングの家族を呼び出したり会話ができるインターフォンの設置を希望しますか？"];
       await this.questionBlock(adviserTalkArray, "interphone", selectorArray);
+
+      // 住所選択用
+      await this.questionAddress();
+      this.adviserTalk(`${this.selectObj.length}個の入力ありがとうございました。`, true);
     },
 
     /*---------------------------------
@@ -114,9 +170,9 @@ Vue.createApp({
         selectorArray...選択肢
         imgArray...選択肢に乗せる画像パス
         subMsgArray...選択肢に乗せる追加の文言
-        calc...計算方式選択の場合に別なクラスを付与するための判定
+        mode...選択肢によって別なクラスを付与するための判定
     ---------------------------------*/
-    async questionBlock(adviserTalkArray, key, selectorArray, imgArray = null, subMsgArray = null,  calc = false) {
+    async questionBlock(adviserTalkArray, key, selectorArray, imgArray = null, subMsgArray = null,  mode = null) {
       // アドバイザー
       // 会話初回はアイコンを出力
       let icon = true;
@@ -128,10 +184,37 @@ Vue.createApp({
         await this.wait(2);
       }
       // 選択肢の出力
-      await this.select(key, selectorArray, imgArray, subMsgArray, calc);
+      await this.select(key, selectorArray, imgArray, subMsgArray, mode);
       await this.wait(1);
       // ユーザー側の会話の出力
       this.myTalk(this.selectObj[key]);
+      await this.wait(2);
+    },
+
+    /*---------------------------------
+      ▼質問⇒地方⇒県名選択⇒ユーザー受け答えを行うメソッド
+    ---------------------------------*/
+    async questionAddress() {
+
+      this.adviserTalk("物件の場所はどちらになりますか？", true);
+      await this.wait(2);
+
+      // addressオブジェクトから重複を除いた地方名を取り出す
+      let uniqueRegions = new Set(this.address.map(item => item.region));
+      // 配列に変換
+      let selectorArray = Array.from(uniqueRegions);
+      await this.select("region", selectorArray, null, null, "address");
+
+      await this.wait(1);
+      // 選択した地方名と一致する要素のみ取り出す。
+      let filteredRegion = this.address.filter(address => this.selectObj["region"] === address.region);
+      // 選択した地方のオブジェクトから県名を取り出す
+      selectorArray = filteredRegion.map(address => address.prefecture);
+      await this.select("prefecture", selectorArray, null, null, "address");
+      await this.wait(1);
+
+      // ユーザー側の会話の出力
+      this.myTalk(this.selectObj["prefecture"]);
       await this.wait(2);
     },
 
@@ -242,14 +325,14 @@ Vue.createApp({
         selectorArray...選択肢
         imgArray...選択肢に乗せる画像パス
         subMsgArray...選択肢に乗せる追加の文言
-        calc...計算方式選択の場合に別なクラスを付与するための判定
+        mode...選択肢によって別なクラスを付与するための判定
     ---------------------------------*/
-    async select(key, selectorArray, imgArray = null, subMsgArray = null, calc = false) {
+    async select(key, selectorArray, imgArray = null, subMsgArray = null, mode = null) {
       const chat = document.getElementById("chat");
       const selectDiv = document.createElement("div");
       selectDiv.classList.add("select-area");
-      // 計算方式の選択の場合だけ特別なクラスを付けたい
-      if (calc) selectDiv.classList.add("calc");
+      // 特別なクラスを付けたい場合、引数で指定したクラス名を付与
+      if (mode) selectDiv.classList.add(`${mode}`);
       // 引数で渡された選択肢の分だけボタンを追加する
       for (let i = 0; i < selectorArray.length; i++) {
         const selectContentDiv = document.createElement("div");
